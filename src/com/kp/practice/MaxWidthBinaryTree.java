@@ -6,7 +6,7 @@ import java.util.*;
 
 
 // 662: https://leetcode.com/problems/maximum-width-of-binary-tree/
-// Status: Passes tests but isn't optimized for space yet
+// Status: Passes tests but isn't optimized for space yet, 'memory limit exceeded'
 public class MaxWidthBinaryTree implements TestCase {
 
   public int solution(TreeNode root) {
