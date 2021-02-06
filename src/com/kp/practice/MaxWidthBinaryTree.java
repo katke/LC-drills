@@ -43,7 +43,7 @@ public class MaxWidthBinaryTree implements TestCase {
   }
 
   private int rightNodeIndex(int parentIndex) {
-    return parentIndex * 2 + 1;
+    return leftNodeIndex(parentIndex) + 1;
   }
 
   public Map<String, List<TreeNode>> getTestCases() {

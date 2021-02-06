@@ -5,4 +5,5 @@ import java.util.Map;
 
 public interface TestCase {
   Map<?, ?> getTestCases();
+//  Object solution();
 }

@@ -8,13 +8,13 @@ import java.util.Map;
 public class Main {
 
     public static void main(String[] args) {
-        var maxWithBinaryTree = new MaxWidthBinaryTree();
-        for (Map.Entry<String, List<TreeNode>> testCase : maxWithBinaryTree.getTestCases().entrySet()) {
+        var minSubstring = new MinimumSubstring();
+        for (Map.Entry<String, List<String>> testCase : minSubstring.getTestCases().entrySet()) {
             var description = testCase.getKey();
             var params = testCase.getValue();
             System.out.println("-------------------");
-            System.out.println(description);
-            System.out.println(maxWithBinaryTree.solution(params.get(0)));
+            var actual = minSubstring.solution(params.get(0), params.get(1));
+            System.out.println(description + ", actual: " + actual);
         }
 
     }
