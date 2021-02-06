@@ -56,59 +56,6 @@ public class MinimumSubstring implements TestCase {
     return remaining == 0;
   }
 
-//  private boolean allCharsAccountedFor(String window, Set<Integer> tSet, int tCodePoints) {
-//    // doesn't account for letter frequency
-//    int windowCodePointsTotal = window.codePoints()
-//        .filter(ch -> {
-//          var result = tSet.contains(ch);
-//          System.out.println("Char " + ch + " included: " + result);
-//          return result;
-//        })
-//        .sum();
-//    System.out.println("windowCodePointsTotal: " + windowCodePointsTotal);
-//    return windowCodePointsTotal == tCodePoints;
-//
-//    // account for letter frequency
-//    int tSize = t.length();
-//    tSet.stream()
-//        .filter(ch -> tSet.get(ch) != null)
-//
-//    int windowCodePointsTotal = window.codePoints()
-//        // ^ need to get window into data structure I can use
-//        .filter(ch -> tSet.get(ch) != null)
-//        .reduce((tSize, (subtotal, next) -> subtotal - 1);
-//    System.out.println("windowCodePointsTotal: " + windowCodePointsTotal);
-//    return windowCodePointsTotal == 0;
-//  }
-
-//  private Set<Integer> getTCodepointsSet(String t) {
-//    List<Integer> values = new ArrayList<>();
-//    for (int i = 0; i < t.length(); i++) {
-//      var codePoint = t.codePointAt(i);
-//      var currVal = values.get(i);
-//      if (currVal != null) {
-//        values.add(codePoint, currVal + 1);
-//      } else {
-//        values.add(codepoint, 1);
-//      }
-//    }
-//    return values;
-//  }
-
-//  private List<Integer> setTHashtable(String t) {
-//    List<Integer> tTable = new ArrayList<>();
-//    for (var i = 0; i < t.length(); i++) {
-//      var charKey = t.codePointAt(i);
-//      var currentVal = tTable.get(charKey);
-//      var newVal = 1;
-//      if (currentVal != null) {
-//        newVal = currentVal + 1;
-//      }
-//      tTable.set(charKey, newVal);
-//    }
-//    return tTable;
-//  }
-
   private Map<Character, Integer> setTMap(String t) {
     Map<Character, Integer> tMap = new HashMap<>();
     for (var i = 0; i < t.length(); i++) {
