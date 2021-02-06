@@ -9,70 +9,110 @@ import java.util.*;
 // Status: Passes tests but isn't optimized for space yet, 'memory limit exceeded'
 public class MaxWidthBinaryTree implements TestCase {
 
+  //  public int solution(TreeNode root) {
+//    if (root == null) {
+//      return 0;
+//    }
+//    int result = 0;
+//    Deque<Optional<TreeNode>> queue = new ArrayDeque<>();
+//    queue.add(Optional.of(root));
+//    int index = 1;
+//    int currentLevel = 1;
+//
+//    while (!queue.isEmpty()) {
+//      var prevLevel = currentLevel;
+//      // In balanced btrees, knowing which level you're on means you know how many items are present
+//      // with base 2 raised to N power, where N is the level
+//      // 2^0 = 1, 2^1 = 2, 2^3 = 4, etc
+//      currentLevel = (int) (Math.log(index) / Math.log(2));
+//      boolean isEndOfRow = prevLevel != currentLevel;
+//      if (isEndOfRow) {
+//        if (isEmptyRow(queue)) {
+//          break;
+//        }
+//        int actualWidth = getActualWidth(queue);
+//        if (actualWidth > result) {
+//          result = actualWidth;
+//        }
+//      }
+//
+//      var currentOpt = queue.remove();
+//      if (currentOpt.isPresent()) {
+//        var current = currentOpt.get();
+//        if (current.left != null) {
+//          queue.add(Optional.of(current.left));
+//        } else {
+//          queue.add(Optional.ofNullable(null));
+//        }
+//        if (current.right != null) {
+//          queue.add(Optional.of(current.right));
+//        } else {
+//          queue.add(Optional.ofNullable(null));
+//        }
+//      } else {
+//        queue.add(Optional.ofNullable(null));
+//        queue.add(Optional.ofNullable(null));
+//      }
+//      index++;
+//
+//    }
+//    return result;
+//  }
   public int solution(TreeNode root) {
     if (root == null) {
       return 0;
     }
     int result = 0;
-    Deque<Optional<TreeNode>> queue = new ArrayDeque<>();
-    queue.add(Optional.of(root));
-    int index = 1;
-    int currentLevel = 1;
-
+    Deque<PsuedoTuple> queue = new ArrayDeque<>();
+    queue.add(new PsuedoTuple(root, 1));
+    int rowEndIndex = 1;
     while (!queue.isEmpty()) {
-      var prevLevel = currentLevel;
-      currentLevel = (int) (Math.log(index) / Math.log(2));
-      boolean isEndOfRow = prevLevel != currentLevel;
-      if (isEndOfRow) {
-        if (isEmptyRow(queue)) {
-          break;
-        }
-        int actualWidth = getActualWidth(queue);
-        if (actualWidth > result) {
-          result = actualWidth;
-        }
+      PsuedoTuple currentNode = queue.remove();
+      if (currentNode.node.left != null) {
+        queue.add(new PsuedoTuple(currentNode.node.left, leftNodeIndex(currentNode.index)));
+      }
+      if (currentNode.node.right != null) {
+        queue.add(new PsuedoTuple(currentNode.node.right, rightNodeIndex(currentNode.index)));
       }
 
-      var currentOpt = queue.remove();
-      if (currentOpt.isPresent()) {
-        var current = currentOpt.get();
-        if (current.left != null) {
-          queue.add(Optional.of(current.left));
-        } else {
-          queue.add(Optional.ofNullable(null));
-        }
-        if (current.right != null) {
-          queue.add(Optional.of(current.right));
-        } else {
-          queue.add(Optional.ofNullable(null));
-        }
-      } else {
-        queue.add(Optional.ofNullable(null));
-        queue.add(Optional.ofNullable(null));
+      PsuedoTuple firstItem = queue.peekFirst();
+      if (firstItem == null) {
+        break;
+      } else if (firstItem.index > rowEndIndex) { // Indicates we've started a new row
+        rowEndIndex = rightNodeIndex(rowEndIndex);
+        PsuedoTuple lastItem = queue.getLast();
+        result = Math.max(result, lastItem.index - firstItem.index + 1);
       }
-      index++;
 
     }
     return result;
   }
 
-  private boolean isEmptyRow(Deque<Optional<TreeNode>> queue) {
-    return queue
-        .stream()
-        .allMatch(node -> !node.isPresent());
+  private int leftNodeIndex(int parentIndex) {
+    return parentIndex * 2;
   }
 
-  private int getActualWidth(Deque<Optional<TreeNode>> nodes) {
+  private int rightNodeIndex(int parentIndex) {
+    return parentIndex * 2 + 1;
+  }
+
+  private boolean isEmptyRow(Deque<PsuedoTuple> queue) {
+    return queue
+        .stream()
+        .allMatch(tuple -> tuple.node == null);
+  }
+
+  private int getActualWidth(Deque<PsuedoTuple> nodes) {
     boolean hasNodeAtStart = false;
     int width = 0;
     int nullAccum = 0;
-    for (Optional<TreeNode> node : nodes) {
-      if (!hasNodeAtStart && !node.isPresent()) {
+    for (PsuedoTuple tuple : nodes) {
+      if (!hasNodeAtStart && tuple.node == null) {
         continue;
-      } else if (hasNodeAtStart && !node.isPresent()) {
+      } else if (hasNodeAtStart && tuple.node == null) {
         nullAccum++;
         continue;
-      } else if (nullAccum > 0 && node.isPresent()) {
+      } else {
         width += nullAccum;
         nullAccum = 0;
       }
@@ -140,5 +180,14 @@ public class MaxWidthBinaryTree implements TestCase {
     root.left.left.left = new TreeNode(4);
     root.left.left.left.left = new TreeNode(5);
     return root;
+  }
+}
+
+class PsuedoTuple {
+  public TreeNode node;
+  public int index;
+  public PsuedoTuple(TreeNode node, int index) {
+    this.node = node;
+    this.index = index;
   }
 }
