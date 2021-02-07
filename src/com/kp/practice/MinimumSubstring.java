@@ -7,37 +7,37 @@ import java.util.*;
 public class MinimumSubstring implements TestCase {
 
   public String solution(String s, String t) {
-    if (s == null || t == null) {
-      return "";
-    }
+    if (s == null || t == null) return "";
     if (s.length() < t.length()
         || s.length() == 0
         || t.length() == 0) return "";
+    if (s.equals(t)) return s;
 
     var l = 0;
     var r = t.length();
     var result = "";
 
     while (r < s.length()) {
-      while (!allCharsAccountedFor(t, s, l, r)) {
+      while (!allCharsAccountedFor(t, s, l, r) && r < s.length()) {
         r++;
-        System.out.println("Current window: " + s.substring(l, r));
+//        System.out.println("r: " + r + ", l: " + l);
       }
-      if (result.length() == 0 || (r - l + 1) < result.length()) {
-        System.out.println("'R': Setting result to current window");
+      if (result.length() == 0 || (r - l) < result.length()) {
+//        System.out.println("'R': Setting result to current window");
         result = s.substring(l, r);
       }
       l++;
       while (allCharsAccountedFor(t, s, l, r) && l < r) {
-        if (result.length() == 0 || (r - l + 1) < result.length()) { // HEr = 3 | rARRH
+        if (result.length() == 0 || (r - l) < result.length()) {
           result = s.substring(l, r);
-          System.out.println("'L': Setting result to current window");
+//          System.out.println("'L': Setting result to current window");
         }
+//        System.out.println("r: " + r + ", l: " + l);
         l++;
-        System.out.println("Current window: " + s.substring(l, r));
+
       }
-      System.out.println("Result: " + result);
       r++;
+
 
       // keep incrementing r until matching window is found
       // once it is, increment l until the window is no longer desirable
@@ -49,10 +49,14 @@ public class MinimumSubstring implements TestCase {
   private boolean allCharsAccountedFor(String t, String s, int left, int right) {
     var tList = setTList(t);
     var window = s.substring(left, right);
+//    System.out.println("Current window: " + window);
     for (var i = 0; i < window.length(); i++) {
       Character character = window.charAt(i);
       tList.remove(character);
       if (tList.isEmpty()) break;
+    }
+    if (tList.isEmpty()) {
+      System.out.println("Result: " + window);
     }
     return tList.isEmpty();
   }
@@ -85,11 +89,11 @@ public class MinimumSubstring implements TestCase {
 
   public Map<String, List<String>> getTestCases() {
     return Map.of(
-//        "Expected: BANC", List.of("ADOBECODEBANC", "ABC"),
-//        "Expected: \"\"", List.of("ABC", "ABCD"),
-//        "Expected: \" \"", List.of("a", "b"),
-//        "Expected: a", List.of("a", "a"),
-//        "Expected: bCBA", List.of("ABCODEBaNbCBA", "AbC"),
+        "Expected: BANC", List.of("ADOBECODEBANC", "ABC"),
+        "Expected: \"\"", List.of("ABC", "ABCD"),
+        "Expected: \" \"", List.of("a", "b"),
+        "Expected: a", List.of("a", "a"),
+        "Expected: bCBA", List.of("ABCODEBaNbCBA", "AbC"),
         "Expected: HEr", List.of("talkeHandHErRzJrARRHNDeoRRRRzalkje", "Hr")
     );
   }
@@ -136,4 +140,10 @@ public class MinimumSubstring implements TestCase {
 //    if (r >= s.length()) {
 //    break;
 //    }
+//    }
+
+//      if ((r - l < result.length() || result.length() == 0) && !allCharsAccountedFor(t, s, l, r))
+//    r++;
+//    } else{
+//    l++;
 //    }
