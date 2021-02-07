@@ -3,7 +3,7 @@ package com.kp.practice;
 import java.util.*;
 
 // 76 https://leetcode.com/problems/minimum-window-substring/
-// Status: brute force, not optimized
+// Status: ARGH 256/266 tests passing but getting time limit exceeded on final one
 public class MinimumSubstring implements TestCase {
 
   public String solution(String s, String t) {
@@ -17,31 +17,16 @@ public class MinimumSubstring implements TestCase {
     var r = t.length();
     var result = "";
 
-    while (r < s.length()) {
-      while (!allCharsAccountedFor(t, s, l, r) && r < s.length()) {
+    while (r <= s.length()) {
+      var currentWindowDesirable = allCharsAccountedFor(t, s, l, r);
+      if (!currentWindowDesirable) {
         r++;
-//        System.out.println("r: " + r + ", l: " + l);
-      }
-      if (result.length() == 0 || (r - l) < result.length()) {
-//        System.out.println("'R': Setting result to current window");
-        result = s.substring(l, r);
-      }
-      l++;
-      while (allCharsAccountedFor(t, s, l, r) && l < r) {
-        if (result.length() == 0 || (r - l) < result.length()) {
+      } else {
+        if (r - l < result.length() || result.length() == 0) {
           result = s.substring(l, r);
-//          System.out.println("'L': Setting result to current window");
         }
-//        System.out.println("r: " + r + ", l: " + l);
         l++;
-
       }
-      r++;
-
-
-      // keep incrementing r until matching window is found
-      // once it is, increment l until the window is no longer desirable
-      // then increment r, and repeat
     }
     return result;
   }
@@ -49,14 +34,10 @@ public class MinimumSubstring implements TestCase {
   private boolean allCharsAccountedFor(String t, String s, int left, int right) {
     var tList = setTList(t);
     var window = s.substring(left, right);
-//    System.out.println("Current window: " + window);
     for (var i = 0; i < window.length(); i++) {
       Character character = window.charAt(i);
       tList.remove(character);
       if (tList.isEmpty()) break;
-    }
-    if (tList.isEmpty()) {
-      System.out.println("Result: " + window);
     }
     return tList.isEmpty();
   }
@@ -98,52 +79,3 @@ public class MinimumSubstring implements TestCase {
     );
   }
 }
-
-//    System.out.println("tCodepointsTotal: " + tCodepointsTotal);
-//    Set<Integer> tSet = getTCodepointsSet(t);
-//    while (r < s.length()) {
-//      var currentWindow = s.substring(l, r + 1);
-//      var newChar = s.charAt(r);
-//      tList.remove((Character) newChar);
-////      System.out.println("Current window: " + currentWindow);
-////      System.out.println("l: " + s.charAt(l) + ", r: " + s.charAt(r));
-////      System.out.println("tList: " + tList.toString());
-//
-//      if (tList.isEmpty()) {
-////        System.out.println("All chars accounted for");
-//        tList = setTList(t);
-//        if (result.length() == 0 || currentWindow.length() < result.length()) {
-////          System.out.println("Setting result to new window");
-//          result = currentWindow;
-//        }
-//        l++;
-//        r = l;
-//      } else {
-//        r++;
-//      }
-
-//while (r < s.length()) {
-//    tList = setTList(t);
-//    if (result.length() == 0 || currentWindow.length() < result.length()) {
-//    System.out.println("Setting result to current window");
-//    result = currentWindow;
-//    }
-//    l++;
-//    r = l;
-//    while (!tList.isEmpty()) {
-//    currentWindow = s.substring(l, r + 1);
-//    System.out.println("Current window: " + currentWindow);
-//    char newChar = s.charAt(r); // todo
-//    tList.remove((Character) newChar);
-//    System.out.println("tList: " + tList.toString());
-//    r++;
-//    if (r >= s.length()) {
-//    break;
-//    }
-//    }
-
-//      if ((r - l < result.length() || result.length() == 0) && !allCharsAccountedFor(t, s, l, r))
-//    r++;
-//    } else{
-//    l++;
-//    }
