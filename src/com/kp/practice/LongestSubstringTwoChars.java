@@ -1,5 +1,6 @@
 package com.kp.practice;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -7,7 +8,19 @@ import java.util.Map;
 public class LongestSubstringTwoChars implements TestCase {
 
   public int solution(String t) {
+    var tCountMap = tCountMap(t);
+    var l = 0;
+    var r = 0;
+
     return 0;
+  }
+
+  private Map<Character, Integer> tCountMap(String t) {
+    Map<Character, Integer> tMap = new HashMap<>();
+    for (int i = 0; i < t.length(); i++) {
+      tMap.compute(t.charAt(i), (k, v) -> v == null ? 0 : v + 1);
+    }
+    return tMap;
   }
 
   public Map<String, List<String>> getTestCases() {
