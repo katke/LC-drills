@@ -12,7 +12,6 @@ public class ListNode {
           var strBuilder = new StringBuilder();
           strBuilder.append(this.val);
           var nextNode = this.next;
-          if (nextNode == null) return strBuilder.toString();
           while (nextNode != null) {
                strBuilder
                    .append(" -> ")
