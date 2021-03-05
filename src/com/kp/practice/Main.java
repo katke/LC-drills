@@ -9,13 +9,13 @@ import java.util.Map;
 public class Main {
 
     public static void main(String[] args) {
-        var lcClass = new AddTwoNumbers();
-        for (Map.Entry<String, List<ListNode>> testCase : lcClass.getTestCases().entrySet()) {
+        var lcClass = new FindDuplicateNumber();
+        for (Map.Entry<String, List<int[]>> testCase : lcClass.getTestCases().entrySet()) {
             var description = testCase.getKey();
             var params = testCase.getValue();
             System.out.println("-------------------");
-            var actual = lcClass.solution(params.get(0), params.get(1));
-            System.out.println(description + ", actual: " + actual.toLLStringRepresentation());
+            var actual = lcClass.solution(params.get(0));
+            System.out.println(description + ", actual: " + actual);
         }
 
     }
