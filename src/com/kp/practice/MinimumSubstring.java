@@ -68,6 +68,7 @@ public class MinimumSubstring implements TestCase {
     return tList;
   }
 
+  @Override
   public Map<String, List<String>> getTestCases() {
     return Map.of(
         "Expected: BANC", List.of("ADOBECODEBANC", "ABC"),

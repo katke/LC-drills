@@ -47,8 +47,4 @@ public class MergeBinaryTrees implements TestCase {
     }
     return t1;
   }
-
-  public Map<String, List<TreeNode>> getTestCases() {
-    return Map.of("Not transferred to this repo yet", List.of(new TreeNode()));
-  }
 }
