@@ -1,15 +1,34 @@
 package com.kp.practice;
 
 // 797 https://leetcode.com/problems/all-paths-from-source-to-target/
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class AllPathsSourceToTarget implements TestCase {
 
   public List<List<Integer>> solution(int[][] graph) {
-    return new ArrayList<>();
+    var startingPoints = graph[0];
+    var allPaths = new ArrayList<List<Integer>>();
+    for (int node : startingPoints) {
+      var path = new ArrayList<Integer>();
+      path.add(0);
+      allPaths.add(findPath(path, node, graph));
+    }
+    return allPaths;
+  }
+
+  private List<Integer> findPath(List<Integer> currentPath, int nextNode, int[][] graph) {
+    currentPath.add(nextNode);
+    var target = graph.length;
+    var adjList = graph[nextNode];
+    for (int nextNodeToCheck : adjList) {
+      if (nextNodeToCheck == target) {
+        currentPath.add(nextNodeToCheck);
+        return currentPath;
+      } else {
+        return findPath(currentPath, nextNodeToCheck, graph);
+      }
+    }
+    return currentPath;
   }
 
   @Override
