@@ -34,8 +34,47 @@ public class AllPathsSourceToTarget implements TestCase {
   @Override
   public Map<String, int[][]> getTestCases() {
     return Map.of(
-        "1. Expected 2 paths, [[0,1,3],[0,2,3]]", lcExample1()
+        "1. Expected 2 paths, [[0,1,3],[0,2,3]]", lcExample1(),
+        "2. Expected 5 paths, [[0,4],[0,3,4],[0,1,3,4],[0,1,2,3,4],[0,1,4]]", lcExample2(),
+        "3. Expected 1 path, [[0,1]]", lcExample3(),
+        "4. Expected 3 paths, [[0,1,2,3],[0,2,3],[0,3]]", lcExample4(),
+        "5. Expected 2 paths, [[0,1,2,3],[0,3]]", lcExample5()
     );
+  }
+
+  private int[][] lcExample5() {
+    return new int[][] {
+        {1, 3},
+        {2},
+        {3},
+        {}
+    };
+  }
+
+  private int[][] lcExample4() {
+    return new int[][] {
+        {1, 2, 3},
+        {2},
+        {3},
+        {}
+    };
+  }
+
+  private int[][] lcExample3() {
+    return new int[][] {
+        {1},
+        {}
+    };
+  }
+
+  private int[][] lcExample2() {
+    return new int[][] {
+        {4, 3, 1},
+        {3, 2, 4},
+        {3},
+        {4},
+        {}
+    };
   }
 
   private int[][] lcExample1() {
