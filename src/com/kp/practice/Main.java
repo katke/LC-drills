@@ -16,7 +16,7 @@ public class Main {
             var params = testCase.getValue();
             System.out.println("-------------------");
             var actual = lcClass.solution(params);
-            System.out.println(description + ", actual: " + actual);
+            System.out.println(description + ", actual: " + actual.toString());
         }
 
     }
