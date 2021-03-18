@@ -2,12 +2,54 @@ package com.kp.practice;
 
 import com.kp.practice.commontypes.Node;
 
+import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 
 // 133 https://leetcode.com/problems/clone-graph/
 public class CloneGraph implements TestCase {
   public Node solution(Node node) {
-    return node;
+    if (node == null) {
+      return node;
+    }
+    var stack = new ArrayDeque<Node>();
+    var visitedNodes = new ArrayList<Node>();
+    stack.push(node);
+    var cloneMap = new HashMap<Integer, Node>();
+    // Creating hashmap with base new nodes, no neighbors yet
+    while (!stack.isEmpty()) {
+      var currentNode = stack.pop();
+      visitedNodes.add(currentNode);
+      if (!cloneMap.containsKey(currentNode.val)) {
+        cloneMap.put(currentNode.val, new Node(currentNode.val));
+      }
+
+      for (Node neighbor : currentNode.neighbors) {
+        if (!visitedNodes.contains(neighbor)) {
+          stack.push(neighbor);
+        }
+      }
+    }
+    System.out.println(cloneMap.keySet());
+    // Now that we've created all the new nodes, simply add the neighbors
+    // via the node clone objects in the hashmap
+    stack.push(node);
+    visitedNodes = new ArrayList<>();
+    while (!stack.isEmpty()) {
+      var currentNode = stack.pop();
+      visitedNodes.add(currentNode);
+      if (!visitedNodes.contains(currentNode)) {
+        var currentNodeClone = cloneMap.get(currentNode.val);
+        var cloneNeighbors = new ArrayList<Node>();
+        for (Node neighbor : currentNode.neighbors) {
+          cloneNeighbors.add(cloneMap.get(neighbor.val));
+        }
+        currentNodeClone.neighbors = cloneNeighbors;
+      }
+    }
+
+    return cloneMap.get(node.val);
   }
 
   public Map<String, Node> getTestCases() {
