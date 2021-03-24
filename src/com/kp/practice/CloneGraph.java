@@ -21,14 +21,15 @@ public class CloneGraph implements TestCase {
     // TODO combine stack iterations into one in refactor
     while (!stack.isEmpty()) {
       var currentNode = stack.pop();
-      visitedNodes.add(currentNode);
+//      visitedNodes.add(currentNode);
       if (!cloneMap.containsKey(currentNode.val)) {
         cloneMap.put(currentNode.val, new Node(currentNode.val));
       }
 
       for (Node neighbor : currentNode.neighbors) {
-        if (!visitedNodes.contains(neighbor)) {
+        if (!cloneMap.containsKey(neighbor.val)) {
           stack.push(neighbor);
+//          cloneMap.put(neighbor.val, new Node(neighbor.val));
         }
       }
     }
