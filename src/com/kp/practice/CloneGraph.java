@@ -8,7 +8,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 // 133 https://leetcode.com/problems/clone-graph/
+// status: Accepted
 public class CloneGraph implements TestCase {
+  // time complexity O(n + m)
+  // where n = total nodes in graph, and m = largest # of neighbors on any given node
+  // space complexity O(n)
   public Node solution(Node node) {
     if (node == null) {
       return node;
