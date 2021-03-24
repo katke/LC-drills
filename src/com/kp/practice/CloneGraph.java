@@ -40,7 +40,9 @@ public class CloneGraph implements TestCase {
   }
 
   public Map<String, Node> getTestCases() {
-    return Map.of("1. Expected [[2,4],[1,3],[2,4],[1,3]]", lcTestCase1());
+    return Map.of("1. Expected [[2,4],[1,3],[2,4],[1,3]]", lcTestCase1(),
+        "2. Expected [[3,5],[3],[1,2,4],[3],[1]]", testCase2(),
+        "3. Expected [[2],[1,3],[2,4,5,6,7],[3],[3],[3],[3]]", testCase3());
   }
 
   private Node lcTestCase1() {
@@ -61,14 +63,60 @@ public class CloneGraph implements TestCase {
     n4.neighbors.add(n1);
     n4.neighbors.add(n3);
 
-    return n4;
+    return n1;
+  }
+
+  private Node testCase2() {
+    Node n1 = new Node(1);
+    Node n2 = new Node(2);
+    Node n3 = new Node(3);
+    Node n4 = new Node(4);
+    Node n5 = new Node(5);
+
+    n1.neighbors.add(n5);
+    n1.neighbors.add(n3);
+
+    n2.neighbors.add(n3);
+
+    n3.neighbors.add(n1);
+    n3.neighbors.add(n2);
+    n3.neighbors.add(n4);
+
+    n4.neighbors.add(n3);
+
+    n5.neighbors.add(n1);
+
+    return n1;
+  }
+
+  private Node testCase3() {
+    Node n1 = new Node(1);
+    Node n2 = new Node(2);
+    Node n3 = new Node(3);
+    Node n4 = new Node(4);
+    Node n5 = new Node(5);
+    Node n6 = new Node(6);
+    Node n7 = new Node(7);
+
+    n1.neighbors.add(n2);
+
+    n2.neighbors.add(n1);
+    n2.neighbors.add(n3);
+
+    n3.neighbors.add(n2);
+    n3.neighbors.add(n4);
+    n3.neighbors.add(n5);
+    n3.neighbors.add(n6);
+    n3.neighbors.add(n7);
+
+    n4.neighbors.add(n3);
+
+    n5.neighbors.add(n3);
+
+    n6.neighbors.add(n3);
+
+    n7.neighbors.add(n3);
+
+    return n1;
   }
 }
-
-//Input: adjList = [[2,4],[1,3],[2,4],[1,3]]
-//    Output: [[2,4],[1,3],[2,4],[1,3]]
-//    Explanation: There are 4 nodes in the graph.
-//    1st node (val = 1)'s neighbors are 2nd node (val = 2) and 4th node (val = 4).
-//    2nd node (val = 2)'s neighbors are 1st node (val = 1) and 3rd node (val = 3).
-//    3rd node (val = 3)'s neighbors are 2nd node (val = 2) and 4th node (val = 4).
-//    4th node (val = 4)'s neighbors are 1st node (val = 1) and 3rd node (val = 3).
