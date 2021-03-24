@@ -14,49 +14,29 @@ public class CloneGraph implements TestCase {
       return node;
     }
     var stack = new ArrayDeque<Node>();
-    var visitedNodes = new ArrayList<Node>();
     stack.push(node);
-    var cloneMap = new HashMap<Integer, Node>();
-    // Creating hashmap with base new nodes, no neighbors yet
-    // TODO combine stack iterations into one in refactor
+    var cloneNodeMap = new HashMap<Integer, Node>();
+    // cloneNodeMap as source of truth for new node clone objects
     while (!stack.isEmpty()) {
-      var currentNode = stack.pop();
-//      visitedNodes.add(currentNode);
-      if (!cloneMap.containsKey(currentNode.val)) {
-        cloneMap.put(currentNode.val, new Node(currentNode.val));
+      var ogCurrentNode = stack.pop();
+      if (!cloneNodeMap.containsKey(ogCurrentNode.val)) {
+        cloneNodeMap.put(ogCurrentNode.val, new Node(ogCurrentNode.val));
       }
-
-      for (Node neighbor : currentNode.neighbors) {
-        if (!cloneMap.containsKey(neighbor.val)) {
+      var cloneNeighbors = new ArrayList<Node>();
+      for (Node neighbor : ogCurrentNode.neighbors) {
+        if (!cloneNodeMap.containsKey(neighbor.val)) {
+          cloneNodeMap.put(neighbor.val, new Node(neighbor.val));
+        }
+        var neighborCloneNode = cloneNodeMap.get(neighbor.val);
+        if (neighborCloneNode.neighbors == null || neighborCloneNode.neighbors.isEmpty()) {
+          // We haven't visited this node yet
           stack.push(neighbor);
-//          cloneMap.put(neighbor.val, new Node(neighbor.val));
         }
+        cloneNeighbors.add(cloneNodeMap.get(neighbor.val));
       }
+      cloneNodeMap.get(ogCurrentNode.val).neighbors = cloneNeighbors;
     }
-    System.out.println(cloneMap.keySet());
-    // Now that we've created all the new nodes, simply add the neighbors
-    // via the node clone objects in the hashmap
-    // TODO combine stack iterations into one in refactor
-    stack.push(node);
-    visitedNodes = new ArrayList<>();
-    while (!stack.isEmpty()) {
-      var currentNode = stack.pop();
-      System.out.println(currentNode.val);
-      if (!visitedNodes.contains(currentNode)) {
-        var currentNodeClone = cloneMap.get(currentNode.val);
-        var cloneNeighbors = new ArrayList<Node>();
-        for (Node neighbor : currentNode.neighbors) {
-          cloneNeighbors.add(cloneMap.get(neighbor.val));
-          if (!visitedNodes.contains(neighbor)) {
-            stack.push(neighbor);
-          }
-        }
-        currentNodeClone.neighbors = cloneNeighbors;
-        visitedNodes.add(currentNode);
-      }
-    }
-
-    return cloneMap.get(node.val);
+    return cloneNodeMap.get(node.val);
   }
 
   public Map<String, Node> getTestCases() {
