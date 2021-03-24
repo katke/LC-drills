@@ -18,6 +18,7 @@ public class CloneGraph implements TestCase {
     stack.push(node);
     var cloneMap = new HashMap<Integer, Node>();
     // Creating hashmap with base new nodes, no neighbors yet
+    // TODO combine stack iterations into one in refactor
     while (!stack.isEmpty()) {
       var currentNode = stack.pop();
       visitedNodes.add(currentNode);
@@ -34,18 +35,23 @@ public class CloneGraph implements TestCase {
     System.out.println(cloneMap.keySet());
     // Now that we've created all the new nodes, simply add the neighbors
     // via the node clone objects in the hashmap
+    // TODO combine stack iterations into one in refactor
     stack.push(node);
     visitedNodes = new ArrayList<>();
     while (!stack.isEmpty()) {
       var currentNode = stack.pop();
-      visitedNodes.add(currentNode);
+      System.out.println(currentNode.val);
       if (!visitedNodes.contains(currentNode)) {
         var currentNodeClone = cloneMap.get(currentNode.val);
         var cloneNeighbors = new ArrayList<Node>();
         for (Node neighbor : currentNode.neighbors) {
           cloneNeighbors.add(cloneMap.get(neighbor.val));
+          if (!visitedNodes.contains(neighbor)) {
+            stack.push(neighbor);
+          }
         }
         currentNodeClone.neighbors = cloneNeighbors;
+        visitedNodes.add(currentNode);
       }
     }
 
