@@ -7,9 +7,14 @@ import java.util.ArrayDeque;
 import java.util.Map;
 
 // 104 https://leetcode.com/problems/maximum-depth-of-binary-tree/
-// status: 37 / 39 test cases passing
+// status: recursive accepted, iterative 37 / 39 test cases passing
 public class MaximumDepthBinaryTree implements TestCase {
   public int solution(TreeNode root) {
+//    return iterativeApproach(root);
+    return recursiveApproach(root);
+  }
+
+  private int iterativeApproach(TreeNode root) {
     if (root == null) {
       return 0;
     }
@@ -35,6 +40,15 @@ public class MaximumDepthBinaryTree implements TestCase {
 
     }
     return result;
+  }
+
+  private int recursiveApproach(TreeNode currentRoot) {
+    if (currentRoot == null) {
+      return 0;
+    }
+    var leftRecursive = recursiveApproach(currentRoot.left);
+    var rightRecursive = recursiveApproach(currentRoot.right);
+    return Math.max(leftRecursive, rightRecursive) + 1;
   }
 
   @Override
