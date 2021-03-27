@@ -1,5 +1,6 @@
 package com.kp.practice;
 
+import com.kp.practice.commontypes.NodeIndexTuple;
 import com.kp.practice.commontypes.TreeNode;
 
 import java.util.*;
@@ -14,24 +15,24 @@ public class MaxWidthBinaryTree implements TestCase {
       return 0;
     }
     int result = 1;
-    Deque<PsuedoTuple> queue = new ArrayDeque<>();
-    queue.add(new PsuedoTuple(root, 1));
+    Deque<NodeIndexTuple> queue = new ArrayDeque<>();
+    queue.add(new NodeIndexTuple(root, 1));
     int rowEndIndex = 1;
     while (!queue.isEmpty()) {
-      PsuedoTuple currentNode = queue.remove();
+      NodeIndexTuple currentNode = queue.remove();
       if (currentNode.node.left != null) {
-        queue.add(new PsuedoTuple(currentNode.node.left, leftNodeIndex(currentNode.index)));
+        queue.add(new NodeIndexTuple(currentNode.node.left, leftNodeIndex(currentNode.index)));
       }
       if (currentNode.node.right != null) {
-        queue.add(new PsuedoTuple(currentNode.node.right, rightNodeIndex(currentNode.index)));
+        queue.add(new NodeIndexTuple(currentNode.node.right, rightNodeIndex(currentNode.index)));
       }
 
-      PsuedoTuple firstItem = queue.peekFirst();
+      NodeIndexTuple firstItem = queue.peekFirst();
       if (firstItem == null) {
         break;
       } else if (firstItem.index > rowEndIndex) { // Indicates we've started a new row
         rowEndIndex = rightNodeIndex(rowEndIndex);
-        PsuedoTuple lastItem = queue.getLast();
+        NodeIndexTuple lastItem = queue.getLast();
         result = Math.max(result, lastItem.index - firstItem.index + 1);
       }
     }
@@ -110,14 +111,5 @@ public class MaxWidthBinaryTree implements TestCase {
 
   private TreeNode singleNode() {
     return new TreeNode(1);
-  }
-}
-
-class PsuedoTuple {
-  public TreeNode node;
-  public int index;
-  public PsuedoTuple(TreeNode node, int index) {
-    this.node = node;
-    this.index = index;
   }
 }
