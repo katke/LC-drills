@@ -6,6 +6,10 @@ import java.util.List;
 import java.util.Map;
 
 // 21 https://leetcode.com/problems/merge-two-sorted-lists/
+// Status: ACCEPTED
+// Runtime: 0 ms, faster than 100.00% of Java online submissions for Merge Two Sorted Lists.
+// Memory Usage: 37.7 MB, less than 99.98% of Java online submissions for Merge Two Sorted Lists.
+// KOOLAID-MAN "OH YEAHHHH!"
 public class MergeTwoSortedArrays implements TestCase {
 
   // pull out first node in both l1 and l2
@@ -13,6 +17,8 @@ public class MergeTwoSortedArrays implements TestCase {
   // // call .next on l1 node
   // else create node with l2 val (if not null) & point previous next to new one
   // // call .next on l2 node
+  // runtime complexity: O(m + n) where m = l1 # of nodes/n = l2 # of nodes
+  // space complexity: O(m + n)
   public ListNode solution(ListNode l1, ListNode l2) {
     if (l1 == null) {
       return l2;
@@ -23,28 +29,30 @@ public class MergeTwoSortedArrays implements TestCase {
     ListNode mergedResult;
     ListNode l1Next = l1;
     ListNode l2Next = l2;
-    if (l2.val > l1.val) {
-      mergedRoot = new ListNode(l1.val);
-      l1Next = l1.next;
+    if (l2Next.val > l1Next.val) {
+      mergedRoot = new ListNode(l1Next.val);
+      l1Next = l1Next.next;
     } else {
-      mergedRoot = new ListNode(l2.val);
-      l2Next = l2.next;
+      mergedRoot = new ListNode(l2Next.val);
+      l2Next = l2Next.next;
     }
     mergedResult = mergedRoot;
     while (l2Next != null || l1Next != null) {
+      ListNode nextNode;
       if (l1Next == null) {
-        mergedResult.next = new ListNode(l2Next.val);
+        nextNode = new ListNode(l2Next.val);
         l2Next = l2Next.next;
       } else if (l2Next == null) {
-        mergedResult.next = new ListNode(l1Next.val);
+        nextNode = new ListNode(l1Next.val);
         l1Next = l1Next.next;
       } else if (l2Next.val > l1Next.val) {
-        mergedResult.next = new ListNode(l1Next.val);
+        nextNode = new ListNode(l1Next.val);
         l1Next = l1Next.next;
       } else {
-        mergedResult.next = new ListNode(l2Next.val);
+        nextNode = new ListNode(l2Next.val);
         l2Next = l2Next.next;
       }
+      mergedResult.next = nextNode;
       mergedResult = mergedResult.next;
     }
     return mergedRoot;
