@@ -5,87 +5,61 @@ import com.kp.practice.commontypes.ListNode;
 import java.util.List;
 import java.util.Map;
 
-import static java.util.Objects.nonNull;
-
 // 21 https://leetcode.com/problems/merge-two-sorted-lists/
 public class MergeTwoSortedArrays implements TestCase {
+
+  // pull out first node in both l1 and l2
+  // if l1 is not null and smaller, create node with l1 val & point previous next to new one
+  // // call .next on l1 node
+  // else create node with l2 val (if not null) & point previous next to new one
+  // // call .next on l2 node
   public ListNode solution(ListNode l1, ListNode l2) {
     if (l1 == null) {
       return l2;
     } else if (l2 == null) {
       return l1;
     }
-    ListNode mergedRoot = cloneInputL1(l1);
-    ListNode merged = mergedRoot;
-    var l2Next = l2;
-    var currentMergedNode = merged;
-    while (l2Next != null) {
-      // save existing currentMergedNode to refer back to once we find the insertion point
-      var prevMergedNode = currentMergedNode;
-      while (currentMergedNode != null && currentMergedNode.val < l2Next.val) {
-        // traverse merged list until we find the point where currentl2Val is greater than
-        // currentMergedNode value
-        prevMergedNode = currentMergedNode;
-        currentMergedNode = currentMergedNode.next;
-      }
-      if (prevMergedNode.val > l2.val) {
-        currentMergedNode = setNewMergedLLRoot(prevMergedNode, l2Next);
-        if (currentMergedNode.val < l2Next.val) {
-          mergedRoot = currentMergedNode;
-        }
+    ListNode mergedRoot;
+    ListNode mergedResult;
+    ListNode l1Next = l1;
+    ListNode l2Next = l2;
+    if (l2.val > l1.val) {
+      mergedRoot = new ListNode(l1.val);
+      l1Next = l1.next;
+    } else {
+      mergedRoot = new ListNode(l2.val);
+      l2Next = l2.next;
+    }
+    mergedResult = mergedRoot;
+    while (l2Next != null || l1Next != null) {
+      if (l1Next == null) {
+        mergedResult.next = new ListNode(l2Next.val);
+        l2Next = l2Next.next;
+      } else if (l2Next == null) {
+        mergedResult.next = new ListNode(l1Next.val);
+        l1Next = l1Next.next;
+      } else if (l2Next.val > l1Next.val) {
+        mergedResult.next = new ListNode(l1Next.val);
+        l1Next = l1Next.next;
       } else {
-        currentMergedNode = mergeInNewNode(prevMergedNode, l2Next);
+        mergedResult.next = new ListNode(l2Next.val);
+        l2Next = l2Next.next;
       }
-      l2Next = l2Next.next;
+      mergedResult = mergedResult.next;
     }
     return mergedRoot;
-  }
-
-  private ListNode setNewMergedLLRoot(ListNode mergeInsertionPoint, ListNode l2NewRoot) {
-    return new ListNode(l2NewRoot.val, mergeInsertionPoint);
-  }
-
-  private ListNode mergeInNewNode(ListNode mergeInsertionPoint, ListNode l2Node) {
-    ListNode nextNode;
-    // if null, then we're appending to end of l1
-    if (mergeInsertionPoint.next == null) {
-      nextNode = null;
-    } else {
-      // extract the current mergeInsertionPoint.next so we can point the new node to it
-      nextNode = mergeInsertionPoint.next;
-    }
-    // point mergeInsertionPoint.next to a new node with l2 val
-    mergeInsertionPoint.next = new ListNode(l2Node.val, nextNode);
-    return mergeInsertionPoint;
-  }
-
-  private ListNode cloneInputL1(ListNode l1) {
-    var currentNode = l1;
-    ListNode cloneRoot = new ListNode(l1.val);
-    ListNode clone = cloneRoot;
-    boolean isRoot = true;
-    while (currentNode != null) {
-      if (isRoot) {
-        isRoot = false;
-      } else {
-        clone.next = new ListNode(currentNode.val);
-        clone = clone.next;
-      }
-      currentNode = currentNode.next;
-    }
-    return cloneRoot;
   }
 
   @Override
   public Map<String, List<ListNode>> getTestCases() {
     return Map.of(
-//        "1. Expected: [1,1,2,3,4,4]", setupTestCase1(),
-//        "2. Expected: [0,0]", smallLists(),
-//        "3. Expected: [1,2,3,6,7,8]", mergeAtVeryEnd(),
-        "4. Expected: [1,2,3,6,7,8]", mergeAtVeryBeginning()
-//        "5. Expected: [1,2,3,6,7,8]", oneLongList1(),
-//        "6. Expected: [1,2,3,6,7,8]", oneLongList2(),
-//        "7. Expected: [1,2,3,6,7,8]", allListNodesHaveSameValue()
+        "1. Expected: [1,1,2,3,4,4]", setupTestCase1(),
+        "2. Expected: [0,0]", smallLists(),
+        "3. Expected: [1,2,3,6,7,8]", mergeAtVeryEnd(),
+        "4. Expected: [1,2,3,6,7,8]", mergeAtVeryBeginning(),
+        "5. Expected: [1,4,5,6,7,8]", oneLongList1(),
+        "6. Expected: [1,4,5,6,7,8]", oneLongList2(),
+        "7. Expected: [1,1,1,1,1,3,3,3]", allListNodesHaveSameValue()
     );
   }
 
