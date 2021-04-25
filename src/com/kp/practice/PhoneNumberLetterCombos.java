@@ -1,11 +1,11 @@
 package com.kp.practice;
 
-// 17. https://leetcode.com/problems/letter-combinations-of-a-phone-number/
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+// 17. https://leetcode.com/problems/letter-combinations-of-a-phone-number/
+// status: ACCEPTED
 public class PhoneNumberLetterCombos implements TestCase {
   private static final Map<String, List<String>> digitMap = Map.of(
       "2", List.of("a", "b", "c"),
@@ -28,9 +28,6 @@ public class PhoneNumberLetterCombos implements TestCase {
     }
     return results;
   }
-
-  // [a, a, a, b, b, b, c, c, c]
-  // [ad, ae, af, bd, be, bf, cd, ce, cf]
 
   private List<String> addCombinations(String digit, List<String> currentResults) {
     var letters = digitMap.get(digit);
