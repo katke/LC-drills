@@ -4,21 +4,18 @@ import com.kp.practice.commontypes.ListNode;
 import com.kp.practice.commontypes.Node;
 import com.kp.practice.commontypes.TreeNode;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Main {
 
     public static void main(String[] args) {
-        var lcClass = new PhoneNumberLetterCombos();
+        var lcClass = new MaxProfit();
         for (Map.Entry<String, ?> testCase : lcClass.getTestCases().entrySet()) {
             var description = testCase.getKey();
-            String params = (String) testCase.getValue();
+            var params = (List<int[]>) testCase.getValue();
             System.out.println("-------------------");
-            var actual = lcClass.solution(params);
-            System.out.println(description + ", actual: " + actual.toString());
+            var actual = lcClass.solution(params.get(0), params.get(1), params.get(2));
+            System.out.println(description + ", actual: " + actual);
         }
 
     }
